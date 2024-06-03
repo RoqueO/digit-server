@@ -32,6 +32,24 @@ services:
     privileged: true
     network_mode: host
 
+  qbittorent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    ports:
+      - 8080:8080
+      - 49500:49500
+      - 49500:49500/udp
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=49500
+    volumes:
+      - ./qbittorrent/appdata:/config
+      - ./qbittorrent/downloads:/downloads
+    networks:
+      - digit_docker_network
+
 volumes:
   portainer_data:
 
