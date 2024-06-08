@@ -9,6 +9,7 @@ services:
       - portainer
       - homeassistant
     networks:
+      digit_isolated:
       digit_docker_network:
         ipv4_address: 172.1.0.200
 
@@ -48,7 +49,8 @@ services:
       - ./qbittorrent/appdata:/config
       - ./qbittorrent/downloads:/downloads
     networks:
-      - digit_docker_network
+      - digit_vpn_vlan
+      - digit_isolated
 
 volumes:
   portainer_data:
@@ -59,3 +61,20 @@ networks:
     ipam:
       config:
         - subnet: 172.1.0.0/24
+
+  digit_vpn_vlan:
+    driver: macvlan
+    driver_opts:
+      parent: eno1.20
+    ipam:
+      config:
+        - subnet: 192.168.3.0/24
+          ip_range: 192.168.3.96/30
+          gateway: 192.168.3.1
+
+  digit_isolated:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
