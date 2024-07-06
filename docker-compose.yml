@@ -139,6 +139,23 @@ services:
     volumes:
       - grafana-storage:/var/lib/grafana
 
+  couchdb:
+    image: couchdb:latest
+    container_name: obsidian-livesync
+    user: 1000:1000
+    environment:
+      - COUCHDB_USER=roqueo
+      - COUCHDB_PASSWORD=XFXTigger14
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - couchdb-obsidian:/opt/couchdb/data
+    ports:
+      - 5984:5984
+    restart: unless-stopped
+    networks:
+      - digit_docker_network
+
 
 volumes:
   portainer_data:
@@ -146,6 +163,7 @@ volumes:
   omada-data:
   omada-logs:
   grafana-storage:
+  couchdb-obsidian:
 
 networks:
   digit_docker_network:
