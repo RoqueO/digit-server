@@ -63,7 +63,10 @@ services:
       - ./jellyfin/cache:/cache
       - type: bind
         source: /home/roqueo/media/movies
-        target: /media
+        target: /media/movies
+      - type: bind
+        source: /home/roqueo/media/shows
+        target: /media/shows
       #- type: bind
       #  source: /path/to/media2
       #  target: /media2
