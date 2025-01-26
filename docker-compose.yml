@@ -48,6 +48,9 @@ services:
     volumes:
       - ./qbittorrent/appdata:/config
       - ./qbittorrent/downloads:/downloads
+      - type: bind
+        source: /media/samsung/downloads
+        target: /downloads/external
     networks:
       - digit_vpn_vlan
       - digit_isolated
@@ -67,6 +70,12 @@ services:
       - type: bind
         source: /home/roqueo/media/shows
         target: /media/shows
+      - type: bind
+        source: /media/samsung/jellyfin/movies
+        target: /media/external/movies
+      - type: bind
+        source: /media/samsung/jellyfin/shows
+        target: /media/external/shows
       #- type: bind
       #  source: /path/to/media2
       #  target: /media2
