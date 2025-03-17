@@ -5,7 +5,8 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
     depends_on:
       - portainer
       - homeassistant
@@ -63,9 +64,13 @@ services:
     image: jellyfin/jellyfin
     restart: unless-stopped
     network_mode: 'host'
+    devices:
+      - /dev/dri:/dev/dri
     environment:
       - PUID=1000
       - PGID=1000
+      - JELLYFIN_HWACCEL_ARGS=vaapi
+      - DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel
     volumes:
       - ./jellyfin/config:/config
       - ./jellyfin/cache:/cache
@@ -172,6 +177,16 @@ services:
     networks:
       - digit_docker_network
 
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    ports:
+      - "4000:8080"
+    volumes:
+      - open-webui:/app/backend/data
+    restart: unless-stopped
+    networks:
+      - digit_docker_network
 
 volumes:
   portainer_data:
@@ -180,6 +195,7 @@ volumes:
   omada-logs:
   grafana-storage:
   couchdb-obsidian:
+  open-webui:
 
 networks:
   digit_docker_network:
