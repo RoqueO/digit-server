@@ -45,7 +45,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /run/dbus:/run/dbus:ro
     privileged: true
-    network_mode: host
+    networks:
+      - digit_docker_network
 
   qbittorent:
     image: lscr.io/linuxserver/qbittorrent:latest
